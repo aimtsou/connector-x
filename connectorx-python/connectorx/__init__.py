@@ -204,6 +204,13 @@ def read_sql(
     >>> read_sql(postgres_url, queries)
 
     """
+    if isinstance(query, list):
+        query = [q.strip() + ';' if not q.strip().endswith(';') else q for q in query]
+    elif isinstance(query, str):
+        query = query.strip() + ';' if not query.strip().endswith(';') else query
+    else:
+        raise TypeError("query must be a str or a list of str")
+    
     if isinstance(query, list) and len(query) == 1:
         query = query[0]
 
